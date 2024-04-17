@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 nltk.download('stopwords')
-REMOTE_DATA = 'twitter_subset.csv'
+REMOTE_DATA = 'Twitter_data.csv'
 
 load_dotenv()
 
@@ -35,13 +35,27 @@ def get_data():
     
     return df
 
+def page_style():
+    gradient = """
+    <style>
+    [data-testid="stAppViewBlockContainer"]{
+    background: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%);
+    }
+    </style>
+    """
+    st.markdown(gradient, unsafe_allow_html=True)
+    st.markdown("<Center><H1>Twitter Data Analysis</H1></Center>", unsafe_allow_html = True)
+
+page_style()
+
 df = get_data()
-st.title("Let's analyze the top 10 words that are being used frequently by users on twitter")
+st.markdown("<h3>10 most frequently used words by users on twitter</h3>", unsafe_allow_html=True)
+
+st.markdown("Examining the top 10 most frequently used words by users on Twitter, we examine how these terms are associated with user engagement and activity levels.")
 
 data = df.copy()
 data.columns=["target","ids","date","flag","user","text"]
 
-data = data[:10000]
 data['text']=data['text'].str.lower()
 stopwords_list = stopwords.words('english')
 
@@ -97,4 +111,22 @@ plt.show()
 
 st.pyplot(fig)
 
+st.markdown("From the graph provided, it's clear that internet users prefer content with a personal touch, as shown by the high number of first-person pronouns like 'I'm'.<br>", unsafe_allow_html=True)
+
+st.markdown("<h3> Dataset </h3>", unsafe_allow_html=True)
 st.dataframe(df.head(25))
+
+st.markdown("<h3> Sentiment Prediction </h3>", unsafe_allow_html=True)
+
+text_input = st.text_input('Enter the sentence you want to know the sentiment for: ')
+
+submit_button = st.button('Get Sentiment')
+
+if submit_button:
+    st.write(f'Sentiment: {"Negative"}')
+
+st.markdown("<h3>Issues:</h3>", unsafe_allow_html=True)
+st.markdown("The one issue that I've found as of now is during deployment with the requirements txt file. So, for this I had to make multiple changes to the txt file.<br>", unsafe_allow_html=True)
+
+st.markdown("<h3> Next Steps:</h3>", unsafe_allow_html=True)
+st.markdown("There are still few more visualizations left and the predictive model is still being worked on")

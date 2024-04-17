@@ -4,7 +4,8 @@ import pandas as pd
 import boto3
 from botocore.exceptions import ClientError
 from botocore.config import Config
-
+import codecs
+import io
 
 class B2(object):
     def __init__(self, endpoint, key_id, secret_key):
@@ -47,7 +48,10 @@ class B2(object):
     def get_df(self, remote_path):
         # Get file
         obj = self.bucket.Object(remote_path)
-        df = pd.read_csv(obj.get()['Body'])
+        body = obj.get()['Body']
+        print(obj.get()['Body'])
+        decoded_body = body.read().decode('ISO-8859-1')
+        df = pd.read_csv(io.StringIO(decoded_body), encoding="ISO-8859-1")
         return df
     
     def get_object(self, remote_path):
