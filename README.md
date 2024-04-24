@@ -11,17 +11,19 @@ The data used for this project is a collection of Twitter tweets from various pe
 I have used logistic regression, a supervised learning algorithm. First, the text data is preprocessed, which includes lowercase, special character removal, and tokenization. Stopwords have been eliminated as well. The text is then transformed to numerical characteristics using the CountVectorizer. The logistic regression model is trained on these features to determine the sentiment of the tweets. New text inputs are preprocessed identically and fed into the trained model to predict their sentiment.
 
 <h1>Tools Used:</h1>
-<h3>1. Python</h3>: Used as the primary programming language for coding the project.
-<h3>2. Scikit-learn</h3>: Utilized for implementing the logistic regression model, preprocessing text data, and evaluating model performance.
-<h3>3. Streamlit</h3>: Used to create the web application interface for user interaction.
-<h3>4. Pandas</h3>: Used for data manipulation and analysis.
-<h3>5. Matplotlib</h3>: Used for data visualization, particularly for plotting the top 10 most frequent words.
-<h3>6. NLTK (Natural Language Toolkit)</h3>: Used for tokenization and removing stopwords.
+<h3>1. Python:</h3> Used as the primary programming language for coding the project.
+<h3>2. Scikit-learn:</h3> Utilized for implementing the logistic regression model, preprocessing text data, and evaluating model performance.
+<h3>3. Streamlit:</h3> Used to create the web application interface for user interaction.
+<h3>4. Pandas:</h3> Used for data manipulation and analysis.
+<h3>5. Matplotlib:</h3> Used for data visualization, particularly for plotting the top 10 most frequent words.
+<h3>6. NLTK (Natural Language Toolkit):</h3> Used for tokenization and removing stopwords.
 
 <h1>Ethical Concerns:</h1>
 There are several ethical concerns associated with sentiment analysis, especially on social media data. Such as-
 <h3>1. Privacy:</h3> Make sure that the tweets used in the study are anonymised and do not reveal sensitive information about individuals.
 <h3>2. Bias:</h3> Be aware of any potential biases in the dataset and model predictions to ensure fairness and inclusion.
 <h3>3. Misinterpretation:</h3> Users should be aware that sentiment analysis presents a simplified representation of complex beliefs and feelings. For a more full examination, the tool should be used in alongside other research approaches.
+
+
 
 Link- https://varshaproject.streamlit.app/
