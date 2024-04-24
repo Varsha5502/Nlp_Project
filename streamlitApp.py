@@ -18,8 +18,10 @@ import string
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from utils import sentiment_modelling as md
+
 nltk.download('stopwords')
-REMOTE_DATA = 'Twitter_data.csv'
+REMOTE_DATA = 'Twitter_sample.csv'
 
 load_dotenv()
 
@@ -48,6 +50,7 @@ def page_style():
 
 page_style()
 
+# df = pd.read_csv("Twitter_data.csv", encoding="ISO-8859-1")
 df = get_data()
 st.markdown("<h3>10 most frequently used words by users on twitter</h3>", unsafe_allow_html=True)
 
@@ -59,11 +62,11 @@ data.columns=["target","ids","date","flag","user","text"]
 data['text']=data['text'].str.lower()
 stopwords_list = stopwords.words('english')
 
-STOPWORDS = set(stopwords_list)
-def cleaning_stopwords(text):
-    return " ".join([word for word in str(text).split() if word not in STOPWORDS])
+# STOPWORDS = set(stopwords_list)
+# def cleaning_stopwords(text):
+#     return " ".join([word for word in str(text).split() if word not in STOPWORDS])
 
-data['text'] = data['text'].apply(lambda text: cleaning_stopwords(text))
+# data['text'] = data['text'].apply(lambda text: cleaning_stopwords(text))
 
 def cleaning_email(data):
     return re.sub('@[^\s]+', ' ', data)
@@ -82,6 +85,8 @@ data['text'] = data['text'].apply(lambda text: cleaning_punctuations(text))
 def cleaning_numbers(data):
     return re.sub('[0-9]+', '', data)
 data['text'] = data['text'].apply(lambda x: cleaning_numbers(x))
+
+data_1 = data.copy()
 
 tokenizer = RegexpTokenizer(r'\w+')
 data['text'] = data['text'].apply(tokenizer.tokenize)
@@ -107,7 +112,6 @@ plt.xlabel('Words')
 plt.ylabel('Frequency')
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.show()
 
 st.pyplot(fig)
 
@@ -116,6 +120,8 @@ st.markdown("From the graph provided, it's clear that internet users prefer cont
 st.markdown("<h3> Dataset </h3>", unsafe_allow_html=True)
 st.dataframe(df.head(25))
 
+model, acc, cnt_vct = md.modelling().model(data_1)
+
 st.markdown("<h3> Sentiment Prediction </h3>", unsafe_allow_html=True)
 
 text_input = st.text_input('Enter the sentence you want to know the sentiment for: ')
@@ -123,10 +129,12 @@ text_input = st.text_input('Enter the sentence you want to know the sentiment fo
 submit_button = st.button('Get Sentiment')
 
 if submit_button:
-    st.write(f'Sentiment: {"Negative"}')
+    pred = md.modelling().pred(model, text_input, cnt_vct)
 
-st.markdown("<h3>Issues:</h3>", unsafe_allow_html=True)
-st.markdown("The one issue that I've found as of now is during deployment with the requirements txt file. So, for this I had to make multiple changes to the txt file.<br>", unsafe_allow_html=True)
+    res = ""
+    if pred[0] == 0:
+        res = "Negative"
+    else:
+        res = "Positive"
 
-st.markdown("<h3> Next Steps:</h3>", unsafe_allow_html=True)
-st.markdown("There are still few more visualizations left and the predictive model is still being worked on")
+    st.write(f'Sentiment: {res}')
